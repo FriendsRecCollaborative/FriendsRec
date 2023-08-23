@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server of friend rec",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FriendsRecCollaborative/FriendsRec.git"
+  },
+  "author": "wnguye03, kyoon0, YouruiR, larkinaj",
+  "license": "MIT",
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "express": "^4.18.2",
+    "typescript": "^5.1.6"
+  }
+}
