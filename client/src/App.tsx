@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import '../src/index.css';
 
 function App() {
+  // All route paths
   return (
     <>
       <Router>
