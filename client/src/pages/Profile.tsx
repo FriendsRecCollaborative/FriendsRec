@@ -3,9 +3,9 @@ import Sidebar from '../Sidebar';
 function Profile() {
   return (
     <>
-      <div className='flex'>
+      <div className='flex h-screen bg-gray-50'>
         <Sidebar />
-        <main className='ml-80 p-5 flex-col rounded-lg border border-slate-200 border-1'>
+        <main className='ml-80 mr-64 p-20 pt-24 flex-col border-r-[1.5px]'>
           <div className='flex'>
             <div className='p-10 flex-shrink-0 text-center rounded-lg border border-slate-200 border-1'>
               <img className='rounded-full h-[200px] w-[200px] m-auto' src="https://avatars.githubusercontent.com/u/31088037?v=4" alt='profile'></img>
@@ -44,7 +44,7 @@ function Profile() {
               </div>
             </div>
           </div>
-          <div className='ml-10'>
+          <div className='ml-5'>
             <p className='my-5 font-semibold text-xl underline'>My Activity</p>
             <div className='my-5'>
               <p>Andrew recommended In-N-Out</p>
