@@ -73,8 +73,7 @@ function Home() {
                     <img className="w-12 h-12 mb-3 mr-5 rounded-full sm:mb-0" src="/images/sample-photo4.png" alt="sample-photo4" />
                     <div className="text-gray-600 dark:text-gray-400">
                       <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">William Nguyen</span> recommends
-                        <span className="font-medium text-gray-900 dark:text-white">Florida's Finest.</span>
+                        <span className="font-medium text-gray-900 dark:text-white">Yourui Ruan</span> recommends <span className="font-medium text-gray-900 dark:text-white">Florida's Finest.</span>
                       </div>
                       <div className="text-sm font-normal">"Best food in town."</div>
                       <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Jul, 17 2023 &middot; Miami, FL</span>
