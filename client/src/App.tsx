@@ -6,7 +6,6 @@ import Search from './pages/Search';
 import Friends from './pages/Friends';
 import Profile from './pages/Profile';
 import '../src/index.css';
-import Profile from './components/Profile';
 
 function App() {
   // All route paths
