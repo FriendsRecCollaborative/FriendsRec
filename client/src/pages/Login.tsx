@@ -10,13 +10,18 @@ interface UserLogin {
   password: string;
 }
 
-function Register() {
+function Login() {
   const [formData, setFormData] = useState<UserLogin>({
     username: '',
     password: '',
   });
 
   const { username, password } = formData;
+
+  const [fieldsComplete, setFieldsComplete] = useState(false);
+  useEffect(() => {
+    setFieldsComplete(username.trim() !== '' && password.trim() !== '');
+  }, [username, password]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,24 +57,32 @@ function Register() {
 
   return (
     <>
-      <div className="auth-for-container">
-        <form className="register-form" onSubmit={submitForm}>
-          <div>
-            <input type="text" id="username" name="username" placeholder="Username" onChange={onChange} />
-          </div>
-          <div>
-            <input type="password" id="password" name="password" placeholder="Your Password" onChange={onChange} />
-          </div>
-          <button className="sign-up" type="submit">
-            Login
-          </button>
-        </form>
-        <p className="register-link">
-          Don't have an account? <Link to="/register">Sign up</Link>
-        </p>
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center">
+        <div className="max-w-md w-full mx-auto flex justify-center">
+          <img className="logo w-64" src="/images/logo.png" alt="logo" />
+        </div>
+        <div className="max-w-md w-full mx-auto mt-4 bg-white p-8 border border-gray-300">
+          <form className="space-y-6" onSubmit={submitForm}>
+            <div>
+              <input className="w-full p-2 border border-gray-300 rounded mt-1" type="text" id="username" name="username" placeholder="Username" onChange={onChange} />
+            </div>
+            <div>
+              <input className="w-full p-2 border border-gray-300 rounded mt-1" type="password" id="password" name="password" placeholder="Your Password" onChange={onChange} />
+            </div>
+            <button className={`w-full py-2 px-4 rounded-md text-white ${fieldsComplete ? 'bg-blue-600 transform hover:scale-101.5' : 'bg-blue-300'}`} disabled={!fieldsComplete} type="submit">
+              Login
+            </button>
+          </form>
+          <p className="font-medium text-md mt-4">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-500 font-bold">
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </>
   );
 }
 
-export default Register;
+export default Login;
