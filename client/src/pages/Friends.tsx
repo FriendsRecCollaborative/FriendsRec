@@ -1,7 +1,6 @@
-import React from 'react';
 import Sidebar from '../Sidebar';
 
-function Home() {
+function Friends() {
   return (
     <>
       <Sidebar />
@@ -9,4 +8,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Friends;
