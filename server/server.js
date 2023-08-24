@@ -10,15 +10,16 @@ app.use(cors());
 app.use(express.json());
 
 // statically serve everything in the dist folder on the route '/dist'
-app.use('/dist', express.static(path.join(__dirname, '../dist/')));
+app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
 // serve index.html on the route '/'.
 // The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
 if (process.env.NODE_ENV === 'production') {
   app.get('/*', (req, res) =>
-    res.status(200).sendFile(path.join(__dirname, '../dist/index.html'))
+    res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
   );
 }
+
 
 /*
  * To-Do: Add a 404 page backup route
