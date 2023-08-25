@@ -1,6 +1,25 @@
 import Sidebar from '../Sidebar';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../app/store';
+import { getNewsfeed } from '../features/newsfeed/newsfeedSlice';
 
 function Home() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { newsfeed, isLoading, isError, isSuccess } = useSelector((state: RootState) => state.newsfeed);
+  // Uncomment once auth is connected with server / backend
+  useEffect(() => {
+    // if (!user) {
+    //   navigate('/');
+    // }
+    dispatch(getNewsfeed() as any);
+  }, [user, navigate, isError, dispatch]);
+
+  console.log(newsfeed);
+
   return (
     <>
       <div className="flex h-screen bg-gray-50">

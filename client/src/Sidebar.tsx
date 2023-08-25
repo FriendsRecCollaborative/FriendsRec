@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, reset } from '../src/features/auth/authSlice';
+import { RootState } from './app/store';
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -18,6 +21,16 @@ function Sidebar() {
       document.removeEventListener('click', handleClick);
     };
   }, []);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const logoutClick = () => {
+    dispatch(logout() as any);
+    dispatch(reset());
+    navigate('/');
+  };
 
   const toggleMenu = () => {
     setOpen(!open);
@@ -82,9 +95,7 @@ function Sidebar() {
                   <span className="ml-5">More</span>
                   {open && (
                     <div className="absolute top-full left-0 mt-2 ml-5 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg p-3 z-10">
-                      <Link to="/">
-                        <div>Log out</div>
-                      </Link>
+                      <button onClick={logoutClick}>Log out</button>
                     </div>
                   )}
                 </div>
