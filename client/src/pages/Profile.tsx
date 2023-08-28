@@ -1,5 +1,4 @@
 import Sidebar from '../Sidebar';
-import { Link } from 'react-router-dom';
 
 function Profile() {
   return (
@@ -14,17 +13,17 @@ function Profile() {
                 <h3 className="font-bold text-xl mt-2 text-center">Andrew Larkin</h3>
                 <p className="pl-8 text-sm text-gray-900">Joined Aug 23, 2023</p>
               </div>
-              <div className="mb-14">
-                <div className="flex items-center">
-                  <div className="ml-8 mr-5 text-center">
+              <div className="mb-14 w-[275px]">
+                <div className="grid grid-cols-3 gap-5">
+                  <div className="text-center">
                     <p>25</p>
                     <p>Recs</p>
                   </div>
-                  <div className="m-5 text-center ">
+                  <div className="text-center ">
                     <p>10</p>
                     <p>Followers</p>
                   </div>
-                  <div className="m-5 text-center ">
+                  <div className="text-center ">
                     <p>35</p>
                     <p>Following</p>
                   </div>
