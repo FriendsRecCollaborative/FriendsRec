@@ -9,7 +9,7 @@ authController.register = async (req, res, next) => {
         const findValues = [username, email];
         const findUser = await db.query(findQuery, findValues);
         // edge case where username/email is already in use
-        if (findUser.rows.length === 0) {
+        if (findUser.rows.length > 0) {
             res.locals.alreadyUsed = true;
             return next();
         }

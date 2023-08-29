@@ -1,4 +1,4 @@
-const db = require('../models/databaseModels');
+const db = require('../models/userModel');
 const reviewController = {};
 
 reviewController.getAllReviews = (req, res, next) => {
