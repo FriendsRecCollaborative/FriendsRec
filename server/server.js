@@ -12,7 +12,7 @@ app.use(express.json());
 // statically serve everything in the dist folder on the route '/dist'
 // app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
-const reviewRouter = require('./routes/reviewRouter');
+const reviewRouter = require('./routers/reviewRouter');
 const authRouter = require('./routers/authRouter')
 
 app.use('/api/review', reviewRouter);
