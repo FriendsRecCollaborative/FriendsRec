@@ -9,14 +9,14 @@ function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { newsfeed, isLoading, isError, isSuccess } = useSelector((state: RootState) => state.newsfeed);
+  const { newsfeed, isError, isSuccess } = useSelector((state: RootState) => state.newsfeed);
   // Uncomment once auth is connected with server / backend
   useEffect(() => {
     // if (!user) {
     //   navigate('/');
     // }
     dispatch(getNewsfeed() as any);
-  }, [user, navigate, isError, dispatch]);
+  }, [user, navigate, isError, dispatch, isSuccess]);
 
   console.log(newsfeed);
 
