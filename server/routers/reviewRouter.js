@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const reviewController = require('../controller/reviewController');
+const reviewController = require('../controllers/reviewController');
 
-router.get('/allreviews', reviewController.getALlReviews, (req, res, next) => {
+router.get('/allreviews', reviewController.getAllReviews, (req, res, next) => {
     return res.status(200).json(res.locals)
 });
 
