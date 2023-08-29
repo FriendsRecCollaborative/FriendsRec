@@ -13,8 +13,12 @@ app.use(express.json());
 // app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
 const reviewRouter = require('./routes/reviewRoute');
+const userRouter = require('./routes/userRouter');
 
 app.use('/api/review', reviewRouter);
+app.use('/api/user', userRouter); 
+
+
 
 
 // serve index.html on the route '/'.

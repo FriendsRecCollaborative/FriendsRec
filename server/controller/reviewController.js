@@ -3,12 +3,11 @@ const reviewController = {};
 
 reviewController.getALlReviews = (req, res, next) => {
   const query = 'SELECT * FROM recs';
-  console.log('reached');
   db.query(query) 
     .then((data) => {
         res.locals = data.rows;
         return next();
-    }).catch((err) => {
+    }).catch((error) => {
         return next({
             log: `Error encountered in databaseController.reveiewController, ${error}`,
             message: 'Error encountered when querying the database for getting all reviews',
@@ -31,7 +30,7 @@ reviewController.getUserReview = (req, res, next)  => {
     .then((data) => {
         res.locals.reviews = data.rows;
         return next();
-    }).catch((err) => {
+    }).catch((error) => {
         return next({
             log: `Error encountered in databaseController.reveiewController, ${error}`,
             message: 'Error encountered when querying the database for getting a user reviews',
@@ -53,7 +52,7 @@ reviewController.createReview = (req, res, next)  => {
     .then((data) => {
         res.locals = data.rows;
         return next();
-    }).catch((err) => {
+    }).catch((error) => {
         return next({
             log: `Error encountered in databaseController.reveiewController, ${error}`,
             message: 'Error encountered when querying the database for creating reviews',
@@ -71,7 +70,7 @@ reviewController.deleteReview = (req, res, next)  => {
     db.query(query, values)
         .then((data) => {
             return next();
-        }).catch((err) => {
+        }).catch((error) => {
             return next({
                 log: `Error encountered in databaseController.reveiewController, ${error}`,
                 message: 'Error encountered when querying the database for deleting reviews',
