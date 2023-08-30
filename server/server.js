@@ -13,6 +13,13 @@ app.use(express.json());
 // statically serve everything in the dist folder on the route '/dist'
 // app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
+const reviewRouter = require('./routers/reviewRouter');
+const authRouter = require('./routers/authRouter')
+
+app.use('/api/review', reviewRouter);
+app.use('/api/auth', authRouter);
+
+
 // serve index.html on the route '/'.
 // The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
 // if (process.env.NODE_ENV === 'production') {

@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const API_URL = '/api/users/';
 
 interface User {
   fullName: string;
@@ -15,8 +14,12 @@ interface UserLogin {
 }
 
 const register = async (userData: User) => {
-  const response = await axios.post(API_URL, userData);
+  const response = await axios.post('/api/auth/register', userData);
 
+  // create front end error message about username or email already in use
+  if (response.status === 409) {
+    return 'registerError'
+  }
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
@@ -24,8 +27,12 @@ const register = async (userData: User) => {
 };
 
 const login = async (userData: UserLogin) => {
-  const response = await axios.post(API_URL, userData);
+  const response = await axios.post('/api/auth/login', userData);
 
+  // create front end error message about bad username and login combination
+  if (response.status === 409) {
+    return 'loginError'
+  }
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
