@@ -20,10 +20,9 @@ function Friends() {
   };
 
   useEffect(() => {
-    // Uncomment once auth is connected with server / backend
-    // if (!user) {
-    //   navigate('/');
-    // }
+    if (!user) {
+      navigate('/');
+    }
 
     dispatch(getFriends() as any);
   }, [user, navigate, isError, dispatch, isSuccess, friends]);
