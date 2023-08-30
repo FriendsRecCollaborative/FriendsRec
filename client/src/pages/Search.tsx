@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Sidebar from '../Sidebar';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindowF } from "@react-google-maps/api";
 import { Library } from "@googlemaps/js-api-loader";
-import { GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_API_ID } from '../config'
 import MapSearchBar from "../MapSearchBar";
 import SearchModal from "../SearchModal";
 
@@ -35,8 +34,8 @@ function Search() {
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: GOOGLE_MAPS_API_ID,
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    id: process.env.REACT_APP_GOOGLE_MAPS_API_ID,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
