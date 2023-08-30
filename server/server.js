@@ -1,26 +1,25 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetch = require('cross-fetch')
-
-
+require('dotenv').config()
 const app = express();
 const port = 8080;
+const fetch = require('cross-fetch')
+
 
 app.use(cors());
 app.use(express.json());
 
 // statically serve everything in the dist folder on the route '/dist'
-app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
+// app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
 // serve index.html on the route '/'.
 // The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
-if (process.env.NODE_ENV === 'production') {
-  app.get('/*', (req, res) =>
-    res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
-  );
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.get('/*', (req, res) =>
+//     res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
+//   );
+// }
 
 
 /*
