@@ -48,17 +48,19 @@ authController.login = async (req, res, next) => {
         if (login.rows.length === 0) {
             res.locals.loginError = true;
         };
+        
         if (!bcrypt.compareSync(password, login.rows[0].password)) {
             res.locals.loginError = true;
-            const userInfo = login.rows[0];
-            res.locals.userInfo = {
-            username: userInfo.username,
-            fullName: userInfo.full_name,
-            email: userInfo.email,
         };
 
-        return next();
-        };
+        const userInfo = login.rows[0];
+        res.locals.userInfo = {
+        username: userInfo.username,
+        fullName: userInfo.full_name,
+        email: userInfo.email,
+    };
+
+    return next()
     } catch (err) {
         console.log(err);
         return next({
