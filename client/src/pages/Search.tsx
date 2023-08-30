@@ -4,6 +4,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindowF } from "@react-google-ma
 import { Library } from "@googlemaps/js-api-loader";
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_API_ID } from '../config'
 import MapSearchBar from "../MapSearchBar";
+import SearchModal from "../SearchModal";
 
 const containerStyle = {
   height: "76%",
@@ -143,6 +144,7 @@ function Search() {
             )
           })}
         </GoogleMap>
+        <SearchModal />
       </div>
     </div>
   ) : (
