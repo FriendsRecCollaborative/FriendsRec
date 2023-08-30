@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fetch = require('cross-fetch')
 
 
 const app = express();
@@ -10,26 +12,35 @@ app.use(cors());
 app.use(express.json());
 
 // statically serve everything in the dist folder on the route '/dist'
-// app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
-
-const reviewRouter = require('./routes/reviewRoute');
-
-app.use('/api/review', reviewRouter);
-
+app.use('/dist', express.static(path.join(__dirname, '../client/build/static')));
 
 // serve index.html on the route '/'.
 // The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
-// if (process.env.NODE_ENV === 'production') {
-//   app.get('/*', (req, res) =>
-//     res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
-//   );
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.get('/*', (req, res) =>
+    res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
+  );
+}
 
 
 /*
  * To-Do: Add a 404 page backup route
  */
 
+app.post('/api/map', async (req, res, next) => {
+  const { lat, lng } = req.body.location
+  try {
+    const googlePlacesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=500&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+
+    const response = await fetch(googlePlacesUrl);
+    const data = await response.json();
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
 
 app.use((err, req, res, next) => {
   const defaultErr = {
