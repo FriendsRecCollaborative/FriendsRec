@@ -1,7 +1,7 @@
-const db = require('../models/databaseModels');
+const db = require('../models/userModel');
 const reviewController = {};
 
-reviewController.getALlReviews = (req, res, next) => {
+reviewController.getAllReviews = (req, res, next) => {
   const query = 'SELECT * FROM recs';
   db.query(query) 
     .then((data) => {
