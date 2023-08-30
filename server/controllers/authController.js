@@ -56,7 +56,7 @@ authController.login = async (req, res, next) => {
             fullName: userInfo.full_name,
             email: userInfo.email,
         };
-
+        }
         return next();
     } catch (err) {
         console.log(err);
