@@ -15,10 +15,16 @@ authController.register = async (req, res, next) => {
             return next();
         }
         // create user if user does not already exist
-        const createQuery = `INSERT INTO users (username, password, email, full_name) VALUES ($1, $2, $3, $4)`
         const hashPassword = bcrypt.hashSync(password, SALT_ROUND);
-        const createValues = [username, hashPassword, email, fullName]
-        await db.query(createQuery, createValues);
+        const createValues = [username, hashPassword, email, fullName];
+        const createQuery = `INSERT INTO users (username, password, email, full_name) VALUES ($1, $2, $3, $4) RETURNING username, email, full_name`
+        const createResponse = await db.query(createQuery, createValues);
+        const userInfo = createResponse.rows[0];
+        res.locals.userInfo = {
+            fullName: userInfo.full_name,
+            email: userInfo.email,
+            username: userInfo.username,
+        }
 
         return next()
     } catch (err) {
@@ -44,6 +50,11 @@ authController.login = async (req, res, next) => {
         };
         if (!bcrypt.compareSync(password, login.rows[0].password)) {
             res.locals.loginError = true;
+        const userInfo = login.rows[0];
+        res.locals.userInfo = {
+            username: userInfo.username,
+            fullName: userInfo.full_name,
+            email: userInfo.email,
         };
 
         return next();
