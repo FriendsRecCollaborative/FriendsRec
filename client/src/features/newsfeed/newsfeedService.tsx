@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const API_URL = '/api/newsfeed/';
-
 const getNewsfeed = async () => {
-  const response = await axios.get(API_URL);
+  const response = await axios.get('/api/review/allreviews');
   return response.data;
 };
 

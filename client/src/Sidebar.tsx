@@ -27,9 +27,9 @@ function Sidebar() {
   const { user } = useSelector((state: RootState) => state.auth);
 
   const logoutClick = () => {
+    navigate('/');
     dispatch(logout() as any);
     dispatch(reset());
-    navigate('/');
   };
 
   const toggleMenu = () => {
