@@ -4,6 +4,8 @@ const path = require('path');
 require('dotenv').config()
 const app = express();
 const port = 8080;
+const fetch = require('cross-fetch')
+
 
 app.use(cors());
 app.use(express.json());
@@ -31,6 +33,20 @@ app.use('/api/auth', authRouter);
  * To-Do: Add a 404 page backup route
  */
 
+app.post('/api/map', async (req, res, next) => {
+  const { lat, lng } = req.body.location
+  try {
+    const googlePlacesUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=500&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+
+    const response = await fetch(googlePlacesUrl);
+    const data = await response.json();
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
 
 app.use((err, req, res, next) => {
   const defaultErr = {
