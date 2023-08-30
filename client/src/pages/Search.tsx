@@ -85,7 +85,7 @@ function Search() {
     <div className='flex h-screen bg-gray-50'>
       <Sidebar />
       <div className='ml-80 p-20 pt-24 w-full'>
-        <MapSearchBar setZipOrAddress={setZipOrAddress} zipOrAddress={zipOrAddress} />
+        <MapSearchBar setZipOrAddress={setZipOrAddress} zipOrAddress={zipOrAddress} setCenter={setCenter} center={center} setRestaurants={setRestaurants} />
         <GoogleMap
           mapContainerStyle={containerStyle}
           // onLoad={handleOnLoad}
