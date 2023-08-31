@@ -4,5 +4,5 @@ COPY . .
 RUN npm install
 RUN npm run dependency
 RUN npm run build
-EXPOSE 3000
+EXPOSE 8080
 ENTRYPOINT node ./server/server.js
