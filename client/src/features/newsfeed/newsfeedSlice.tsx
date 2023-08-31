@@ -1,6 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import newsfeedService from './newsfeedService';
 
+interface NewsfeedItem {
+  recs_id: number;
+  user_id: number;
+  restaurant_id: number;
+  review: string;
+  created_at: string;
+}
+
+interface NewsfeedState {
+  newsfeed: NewsfeedItem[];
+}
 const initialState = {
   newsfeed: [],
   isError: false,
@@ -11,7 +22,7 @@ const initialState = {
 export const getNewsfeed = createAsyncThunk('newsfeed/getAll', async () => {
   try {
     const response = await newsfeedService.getNewsfeed();
-    return response.data;
+    return response;
   } catch (error) {
     console.log(`${error}`);
     throw error;
