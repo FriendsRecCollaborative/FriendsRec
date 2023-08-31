@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-const API_URL = '/api/friends';
-
 const addFriend = async (friendData: any) => {
-  const response = await axios.post(API_URL, friendData);
+  const response = await axios.post('/api/auth/addfriend', friendData);
   return response.data;
 };
 
 const getFriends = async () => {
-  const response = await axios.get(API_URL);
+  const response = await axios.get('/api/auth/allusers');
   return response.data;
 };
 

@@ -19,13 +19,17 @@ function Friends() {
     setFriend('');
   };
 
+  const addClick = async () => {
+    dispatch(addFriend({ friend }) as any);
+  };
+
   useEffect(() => {
     if (!user) {
       navigate('/');
     }
-
     dispatch(getFriends() as any);
-  }, [user, navigate, isError, dispatch, isSuccess, friends]);
+  }, [user, navigate, isError, dispatch, isSuccess]);
+
   return (
     <>
       <div className="flex min-h-screen bg-gray-50">
@@ -69,36 +73,28 @@ function Friends() {
                             </tr>
                           </thead>
                           <tbody className="text-sm divide-y divide-gray-100">
-                            <tr>
-                              <td className="p-2 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="font-medium text-gray-800">Kevin Yoon</div>
-                                </div>
-                              </td>
-                              <td className="p-2 whitespace-nowrap">
-                                <div className="text-left">kyoon0</div>
-                              </td>
-                              <td className="p-2 whitespace-nowrap">
-                                <svg className="w-6 h-6 text-red-400" fill="currentColor">
-                                  <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
-                                </svg>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-2 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="font-medium text-gray-800">Andrew Larkin</div>
-                                </div>
-                              </td>
-                              <td className="p-2 whitespace-nowrap">
-                                <div className="text-left">larkinaj</div>
-                              </td>
-                              <td className="p-2 whitespace-nowrap">
-                                <svg className="w-6 h-6 text-red-400" fill="currentColor">
-                                  <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
-                                </svg>
-                              </td>
-                            </tr>
+                            {friends.map((item) => (
+                              <tr>
+                                <td className="p-2 whitespace-nowrap">
+                                  <div className="flex items-center">
+                                    <div className="font-medium text-gray-800">{item.full_name}</div>
+                                  </div>
+                                </td>
+                                <td className="p-2 whitespace-nowrap">
+                                  <div className="text-left">{item.username}</div>
+                                </td>
+                                <td className=" whitespace-nowrap">
+                                  <svg onClick={addClick} className="w-6 h-6 text-black-500" fill="currentColor">
+                                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
+                                  </svg>
+                                </td>
+                                <td className="p-2 whitespace-nowrap">
+                                  <svg className="w-6 h-6 text-red-400" fill="currentColor">
+                                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
+                                  </svg>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>

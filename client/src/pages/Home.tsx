@@ -51,8 +51,6 @@ function Home() {
     }
   });
 
-  console.log(sortedNewsfeed);
-
   return (
     <>
       <div className="flex bg-gray-50">

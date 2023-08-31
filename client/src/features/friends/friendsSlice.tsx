@@ -21,7 +21,7 @@ export const addFriend = createAsyncThunk('friends/addFriend', async (friendData
 export const getFriends = createAsyncThunk('friends/getFriends', async () => {
   try {
     const response = await friendsService.getFriends();
-    return response.data;
+    return response;
   } catch (error) {
     console.log(`${error}`);
     throw error;
