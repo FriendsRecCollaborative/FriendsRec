@@ -24,7 +24,9 @@ authController.register = async (req, res, next) => {
             fullName: userInfo.full_name,
             email: userInfo.email,
             username: userInfo.username,
-        }
+            user_id: userInfo.user_id,
+            joined: userInfo.created_at,
+        };
 
         return next()
     } catch (err) {
@@ -58,6 +60,8 @@ authController.login = async (req, res, next) => {
         username: userInfo.username,
         fullName: userInfo.full_name,
         email: userInfo.email,
+        user_id: userInfo.user_id,
+        joined: userInfo.created_at,
     };
 
     return next()
