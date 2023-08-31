@@ -5,8 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
 import { addFriend, getFriends } from '../features/friends/friendsSlice';
 
+interface FriendType {
+  user_id: string;
+  full_name: string;
+  username: string;
+}
+
+interface User {
+  fullName: string;
+  username: string;
+  email: string;
+  password: string;
+  user_id: number;
+}
+
 function Friends() {
   const [friend, setFriend] = useState('');
+  const [filteredFriends, setFilteredFriends] = useState<Array<FriendType>>([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,8 +34,12 @@ function Friends() {
     setFriend('');
   };
 
-  const addClick = async () => {
-    dispatch(addFriend({ friend }) as any);
+  const userInfo = JSON.parse(localStorage.getItem('user') || '');
+
+  const addClick = async (user_id: string) => {
+    if (user && userInfo) {
+      dispatch(addFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+    }
   };
 
   useEffect(() => {
@@ -29,6 +48,14 @@ function Friends() {
     }
     dispatch(getFriends() as any);
   }, [user, navigate, isError, dispatch, isSuccess]);
+
+  console.log(friends);
+
+  // useEffect(() => {
+  //   const filtered = friends.filter((friendItem) => friendItem.username.toLowerCase().includes(friend.toLowerCase()));
+  //   setFilteredFriends(filtered);
+  // }, [friend, friends]);
+  // console.log(friend);
 
   return (
     <>
@@ -55,46 +82,45 @@ function Friends() {
                 </button>
               </form>
             </div>
-            <section className=" text-gray-600 ">
+            <section className="text-gray-600 ">
               <div className="pt-10">
-                <div className="max-h-[750px] overflow-y-auto">
-                  <div className=" w-[400px] bg-white shadow-sm rounded-sm ">
+                <div className="max-h-[550px] w-[550px] overflow-y-scroll">
+                  <div className="w-[550px] bg-white shadow-sm rounded-sm ">
                     <div className="p-3">
                       <div className="overflow-x-auto">
                         <table className="table-auto w-full">
                           <thead className="text-xs font-semibold uppercase text-gray-400">
                             <tr>
-                              <th className="p-2 whitespace-nowrap">
+                              <th className="p-2 whitespace-nowrap sticky top-0 bg-white z-10">
                                 <div className="font-semibold text-left">Name</div>
                               </th>
-                              <th className="p-2 whitespace-nowrap">
+                              <th className="p-2 whitespace-nowrap sticky top-0 bg-white z-10">
                                 <div className="font-semibold text-left">Username</div>
                               </th>
                             </tr>
                           </thead>
                           <tbody className="text-sm divide-y divide-gray-100">
-                            {friends.map((item) => (
-                              <tr>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="flex items-center">
-                                    <div className="font-medium text-gray-800">{item.full_name}</div>
-                                  </div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left">{item.username}</div>
-                                </td>
-                                <td className=" whitespace-nowrap">
-                                  <svg onClick={addClick} className="w-6 h-6 text-black-500" fill="currentColor">
-                                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
-                                  </svg>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <svg className="w-6 h-6 text-red-400" fill="currentColor">
-                                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
-                                  </svg>
-                                </td>
-                              </tr>
-                            ))}
+                            {friends.map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td className="p-2 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                      <div className="font-medium text-gray-800">{item.full_name}</div>
+                                    </div>
+                                  </td>
+                                  <td className="p-2 whitespace-nowrap">
+                                    <div className="text-left">{item.username}</div>
+                                  </td>
+                                  <td className="flex justify-center items-center">
+                                    <div className="mt-2 mb-2">
+                                      <button onClick={() => addClick(item.user_id)} className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 ">
+                                        Follow
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
                       </div>
