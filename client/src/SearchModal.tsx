@@ -19,7 +19,7 @@ function SearchModal( props: any ) {
 
     // Splitting string2 to separate the city/state/country parts
     let parts = string2.split(', ');
-    let restaurantAddress = string1 + ", " + parts.slice(2).join(', ');
+    let restaurantAddress = string1 + ", " + parts.slice(1).join(', ');
 
     console.log(restaurantAddress);
     try {
