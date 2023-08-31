@@ -58,7 +58,7 @@ authController.login = async (req, res, next) => {
         };
 
         return next();
-    } catch (err) {
+    }}catch (err) {
         console.log(err);
         return next({
             log: 'error at authController.login',
