@@ -20,6 +20,8 @@ app.use('/api/review', reviewRouter);
 app.use('/api/auth', authRouter);
 
 if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
   app.get('/', (req, res) => {
     const indexPath = path.join(__dirname, '../client/build/index.html');
     return res.status(200).sendFile(indexPath);
