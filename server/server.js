@@ -19,7 +19,12 @@ const authRouter = require('./routers/authRouter')
 app.use('/api/review', reviewRouter);
 app.use('/api/auth', authRouter);
 
-
+if (process.env.NODE_ENV === 'production') {
+  app.get('/', (req, res) => {
+    const indexPath = path.join(__dirname, '../client/build/index.html');
+    return res.status(200).sendFile(indexPath);
+  })
+}
 // serve index.html on the route '/'.
 // The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
 // if (process.env.NODE_ENV === 'production') {
