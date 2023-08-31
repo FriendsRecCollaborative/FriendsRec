@@ -4,6 +4,8 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindowF } from "@react-google-ma
 import { Library } from "@googlemaps/js-api-loader";
 import MapSearchBar from "../MapSearchBar";
 import SearchModal from "../SearchModal";
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 const containerStyle = {
   height: "76%",
@@ -18,6 +20,10 @@ function Search() {
   const [center, setCenter] = useState({ lat: 40.71, lng: -74.00 }); // Default center
   const [zipOrAddress, setZipOrAddress] = useState('')
   const [ libraries ] = useState<Library[]>(['places'])
+  const { user } = useSelector((state: RootState) => state.auth);
+  if (!process.env.REACT_APP_GOOGLE_MAPS_API_KEY) {
+    process.env.REACT_APP_GOOGLE_MAPS_API_KEY = ''
+  }
 
   const handleActiveMarker = (marker: any) => {
     setActiveMarker(null)
@@ -32,6 +38,28 @@ function Search() {
     restaurants.forEach(({ position }) => bounds.extend(position));
     map.fitBounds(bounds);
   };
+
+  const handleSubmitRec = async (location: any) => {
+    try {
+      const response = await fetch(`/api/review/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+          userId: center,
+          restaurantId: '', 
+          review: ''
+        })
+      })
+
+      const data = await response.json();
+      console.log(data.results); // Store the fetched restaurants
+      setRestaurants(data.results)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   const { isLoaded } = useJsApiLoader({
     id: process.env.REACT_APP_GOOGLE_MAPS_API_ID,
@@ -133,7 +161,7 @@ function Search() {
                         </svg>
                         <div className='text-sm'>{location.vicinity}</div>
                       </div>
-                      <button className="text-sky-600 active:bg-sky-600 active:text-white font-bold uppercase text-xs px-4 py-2 rounded-full border-sky-600 border shadow hover:shadow-lg outline-none focus:outline-none mr-1 my-2 ease-linear transition-all duration-150" type="button">
+                      <button onClick={()=>handleSubmitRec(location)} className="text-sky-600 active:bg-sky-600 active:text-white font-bold uppercase text-xs px-4 py-2 rounded-full border-sky-600 border shadow hover:shadow-lg outline-none focus:outline-none mr-1 my-2 ease-linear transition-all duration-150" type="button">
                         <div>Recommend</div>
                       </button>
                     </div>
