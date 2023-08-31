@@ -18,12 +18,11 @@ reviewController.getAllReviews = (req, res, next) => {
 reviewController.getUserReview = (req, res, next)  => {
     const { id } = req.params;
     const query = `
-    SELECT *
+    SELECT u.username, u.full_name, r.name, r.address, recs.review
     FROM recs
-    JOIN users
-    ON recs.user_id = users.user_id
-    WHERE users.user_id = $1;
-    `;
+    JOIN users AS u ON recs.user_id = u.user_id
+    JOIN restaurants AS r ON recs.restaurant_id = r.restaurant_id
+    WHERE u.user_id = $1`
     const values = [parseInt(id)];
 
     db.query(query, values) 
@@ -41,11 +40,11 @@ reviewController.getUserReview = (req, res, next)  => {
 };
 
 reviewController.createReview = (req, res, next)  => {
-    const { userId, restaurantId, review } = req.body;
+    const { userId, restaurantId, review, address } = req.body;
     const query = `
     INSERT INTO recs 
-    (user_id, restaurant_id, review) 
-    VALUES($1, $2, $3) returning *;`;
+    (user_id, restaurant_id, review, address) 
+    VALUES($1, $2, $3, $4) returning *;`;
     const values = [parseInt(userId), parseInt(restaurantId), review];
 
     db.query(query, values) 
