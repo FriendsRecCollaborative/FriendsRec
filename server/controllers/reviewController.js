@@ -83,15 +83,46 @@ reviewController.getUserReview = (req, res, next)  => {
 
 };
 
-reviewController.createReview = (req, res, next)  => {
-    const { userId, restaurantId, review, address } = req.body;
-    const query = `
-    INSERT INTO recs 
-    (user_id, restaurant_id, review, address) 
-    VALUES($1, $2, $3, $4) returning *;`;
-    const values = [parseInt(userId), parseInt(restaurantId), review];
+reviewController.createReview = async (req, res, next)  => {
+    const { userId, review, restaurantAddress, restaurantName } = req.body;
+    let newRestaurantId
 
-    db.query(query, values) 
+    // Check if the restaurant already exists
+    const checkRestaurant = 'SELECT restaurant_id FROM restaurants WHERE address = $1';
+    const restaurantResult = await db.query(checkRestaurant, [restaurantAddress]);
+    if (restaurantResult.rows.length) newRestaurantId = restaurantResult.rows[0].restaurant_id;
+
+    if (restaurantResult.rows.length === 0) {
+      // Restaurant doesn't exist, so insert it
+      const insertQuery = 'INSERT INTO restaurants (name, address) VALUES ($1, $2) RETURNING restaurant_id';
+      const insertResult = await db.query(insertQuery, [restaurantName, restaurantAddress]);
+      newRestaurantId = insertResult.rows[0].restaurant_id;
+      console.log(`Added restaurant with ID ${newRestaurantId}`);
+    } else {
+      console.log('Restaurant already exists');
+    }
+
+    const checkRecs = 'SELECT recs_id FROM recs WHERE user_id = $1 AND restaurant_id = $2';
+    const recsResult = await db.query(checkRecs, [userId, newRestaurantId]);
+    let recQuery
+    let values = []
+
+    if (recsResult.rows.length === 0) {
+      recQuery = `
+      INSERT INTO recs 
+      (user_id, restaurant_id, review) 
+      VALUES($1, $2, $3) returning *;`;
+      values = [parseInt(userId), parseInt(newRestaurantId), review];
+    }
+    else {
+      recQuery = `
+      UPDATE recs 
+      SET review = $1 
+      WHERE recs_id = $2;`;
+      values = [review, parseInt(recsResult.rows[0].recs_id)];
+    }
+
+    db.query(recQuery, values) 
     .then((data) => {
         res.locals = data.rows;
         return next();
