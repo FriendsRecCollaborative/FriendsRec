@@ -63,7 +63,6 @@ authController.login = async (req, res, next) => {
         user_id: userInfo.user_id,
         joined: userInfo.created_at,
     };
-
     return next()
     } catch (err) {
         console.log(err);

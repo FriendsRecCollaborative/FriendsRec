@@ -5,6 +5,10 @@ router.get('/allreviews', reviewController.getAllReviews, (req, res, next) => {
     return res.status(200).json(res.locals)
 });
 
+router.get('/allreviews/:id', reviewController.getAllMyReviews, (req, res, next) => {
+    return res.status(200).json(res.locals);
+})
+
 router.get('/:id', reviewController.getUserReview, (req, res, next) => {
     return res.status(200).json(res.locals.reviews);
 });
