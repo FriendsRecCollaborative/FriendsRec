@@ -1,5 +1,6 @@
 const db = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const { use } = require('../routers/reviewRouter');
 const SALT_ROUND = 10;
 const authController = {};
 
@@ -116,9 +117,9 @@ authController.follow = (req, res, next) => {
 };
 
 authController.unfollow = (req, res, next) => {
-    const { relationId } = req.body;
-    const query =  `DELETE from friends where relation_id = $1`;
-    const values = [parseInt(relationId)];
+    const { user_id, friend_id } = req.body;
+    const query =  `DELETE FROM friends WHERE user_id = $1 AND friend_id = $2`;
+    const values = [parseInt(user_id), parseInt(friend_id)];
 
     db.query(query, values)
         .then((data) => {
