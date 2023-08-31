@@ -1,0 +1,23 @@
+{
+  "name": "friendsrec",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dependency": "concurrently \" cd ./client && npm install\" \"cd ./server && npm install\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FriendsRecCollaborative/FriendsRec.git"
+  },
+  "author": "FriendsRec",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FriendsRecCollaborative/FriendsRec/issues"
+  },
+  "homepage": "https://github.com/FriendsRecCollaborative/FriendsRec#readme",
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
