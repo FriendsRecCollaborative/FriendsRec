@@ -1,5 +1,6 @@
 const db = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const { use } = require('../routers/reviewRouter');
 const SALT_ROUND = 10;
 const authController = {};
 
@@ -24,7 +25,9 @@ authController.register = async (req, res, next) => {
             fullName: userInfo.full_name,
             email: userInfo.email,
             username: userInfo.username,
-        }
+            user_id: userInfo.user_id,
+            joined: userInfo.created_at,
+        };
 
         return next()
     } catch (err) {
@@ -58,8 +61,9 @@ authController.login = async (req, res, next) => {
         username: userInfo.username,
         fullName: userInfo.full_name,
         email: userInfo.email,
+        user_id: userInfo.user_id,
+        joined: userInfo.created_at,
     };
-
     return next()
     } catch (err) {
         console.log(err);
@@ -117,9 +121,9 @@ authController.follow = (req, res, next) => {
 };
 
 authController.unfollow = (req, res, next) => {
-    const { relationId } = req.body;
-    const query =  `DELETE from friends where relation_id = $1`;
-    const values = [parseInt(relationId)];
+    const { user_id, friend_id } = req.body;
+    const query =  `DELETE FROM friends WHERE user_id = $1 AND friend_id = $2`;
+    const values = [parseInt(user_id), parseInt(friend_id)];
 
     db.query(query, values)
         .then((data) => {
