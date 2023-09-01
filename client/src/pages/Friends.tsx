@@ -42,7 +42,7 @@ function Friends() {
 
   const removeClick = async (user_id: string) => {
     if (user && userInfo) {
-      dispatch(removeFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+      dispatch(removeFriend({ user_id: userInfo.user_id, friend_id: user_id }) as any);
       dispatch(getMyFriends() as any);
     }
   };

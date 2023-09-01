@@ -13,8 +13,10 @@ const getMyFriends = async () => {
 };
 
 const removeFriend = async (friendData: any) => {
-  const response = await axios.delete('/api/auth/removefriend', friendData);
-  console.log(response);
+  const response = await axios.delete('/api/auth/removefriend', {
+    data: friendData,
+    headers: { 'Content-Type': 'application/json' },
+  });
   return response.data;
 };
 

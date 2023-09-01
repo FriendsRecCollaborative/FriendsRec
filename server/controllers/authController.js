@@ -124,6 +124,7 @@ authController.follow = (req, res, next) => {
 };
 
 authController.unfollow = (req, res, next) => {
+  console.log(req.body);
   const { user_id, friend_id } = req.body;
   const query = `DELETE FROM friends WHERE user_id = $1 AND friend_id = $2`;
   const values = [parseInt(user_id), parseInt(friend_id)];
