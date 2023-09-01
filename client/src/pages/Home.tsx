@@ -49,7 +49,6 @@ function Home() {
       beyond.push(item);
     }
   });
-  console.log(newsfeed);
 
   return (
     <>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
 import { getFriends } from '../features/friends/friendsSlice';
 import { addFriend } from '../features/myFriends/myFriendsSlice';
+import { getMyFriends } from '../features/myFriends/myFriendsSlice';
 
 interface FriendType {
   user_id: string;
@@ -45,6 +46,12 @@ function Friends() {
     }
   };
 
+  const removeClick = async (user_id: string) => {
+    // if (user && userInfo) {
+    //   dispatch(removeFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+    // }
+  };
+
   useEffect(() => {
     if (!user) {
       navigate('/');
@@ -56,7 +63,10 @@ function Friends() {
     const filtered = friends.filter((friendItem) => friendItem.username.toLowerCase().includes(friend.toLowerCase()));
     setFilteredFriends(filtered);
   }, [friend, friends]);
-  console.log(myFriends);
+
+  useEffect(() => {
+    dispatch(getMyFriends() as any);
+  }, [friend, friends]);
 
   return (
     <>
@@ -118,7 +128,9 @@ function Friends() {
                                   <td className="flex justify-center items-center">
                                     <div className="mt-2 mb-2">
                                       {isFriendAdded ? (
-                                        <button className="bg-gray-200 text-black rounded-lg px-4 py-2">Unfollow</button>
+                                        <button onClick={() => removeClick(item.user_id)} className="bg-gray-200 text-black rounded-lg px-4 py-2">
+                                          Unfollow
+                                        </button>
                                       ) : (
                                         <button onClick={() => addClick(item.user_id)} className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2">
                                           Follow
