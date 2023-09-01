@@ -18,7 +18,7 @@ authController.register = async (req, res, next) => {
     // create user if user does not already exist
     const hashPassword = bcrypt.hashSync(password, SALT_ROUND);
     const createValues = [username, hashPassword, email, fullName];
-    const createQuery = `INSERT INTO users (username, password, email, full_name) VALUES ($1, $2, $3, $4) RETURNING username, email, full_name`;
+    const createQuery = `INSERT INTO users (username, password, email, full_name) VALUES ($1, $2, $3, $4) RETURNING username, email, full_name, user_id, created_at`;
     const createResponse = await db.query(createQuery, createValues);
     const userInfo = createResponse.rows[0];
     res.locals.userInfo = {
