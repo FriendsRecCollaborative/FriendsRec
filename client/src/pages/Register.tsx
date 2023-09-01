@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../features/auth/authSlice';
 import { RootState } from '../app/store';
 
-interface User {
+interface UserRegister {
   fullName: string;
   username: string;
   email: string;
@@ -13,7 +13,7 @@ interface User {
 }
 
 function Register() {
-  const [formData, setFormData] = useState<User>({
+  const [formData, setFormData] = useState<UserRegister>({
     fullName: '',
     username: '',
     email: '',
@@ -52,7 +52,7 @@ function Register() {
 
   const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const userData: User = {
+    const userData: UserRegister = {
       fullName,
       username,
       email,

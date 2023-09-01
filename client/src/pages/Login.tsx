@@ -30,7 +30,7 @@ function Login() {
 
   useEffect(() => {
     if (isError) {
-      console.log('Error in auth/login');
+      alert('Incorrect username and/or password.');
     }
     if (isSuccess || user) {
       navigate('/home');
