@@ -137,18 +137,20 @@ authController.unfollow = (req, res, next) => {
 };
 
 authController.getFollowing = async (req, res, next) => {
-    const { user_id } = req.query;
+    const { id } = req.params;
     const query = `SELECT * FROM friends WHERE user_id = $1`;
-    const values = [user_id];
+    const values = [id];
     const response = await db.query(query, values);
     res.locals.following = response.rows;
+    return next();
 };
 
 authController.getFollowers = async (req, res, next) => {
-    const { user_id } = req.query;
+    const { id } = req.params;
     const query = `SELECT * FROM friends where friends_id = $1`
-    const values = [user_id];
+    const values = [id];
     const response = await db.query(query, values);
     res.locals.followers = response.rows;
+    return next();
 }
 module.exports = authController;
