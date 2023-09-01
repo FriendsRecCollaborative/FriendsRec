@@ -1,5 +1,5 @@
 const db = require('../models/userModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { use } = require('../routers/reviewRouter');
 const SALT_ROUND = 10;
 const authController = {};
