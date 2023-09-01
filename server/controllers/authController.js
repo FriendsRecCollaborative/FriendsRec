@@ -108,7 +108,6 @@ authController.getUser = (req, res, next) => {
 
 authController.follow = (req, res, next) => {
   const { userId, friendId } = req.body;
-  console.log(req.body);
   const query = `INSERT into friends (user_id, friend_id) VALUES($1, $2) returning *;`;
   const values = [parseInt(userId), parseInt(friendId)];
   db.query(query, values)
