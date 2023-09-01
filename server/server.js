@@ -18,15 +18,12 @@ const authRouter = require('./routers/authRouter')
 
 app.use('/api/review', reviewRouter);
 app.use('/api/auth', authRouter);
+app.use(express.static(path.join(__dirname, '../client/build')));
 
-
-// serve index.html on the route '/'.
-// The '/*' is to make sure refresh in browser works with frontend routing (https://ui.dev/react-router-cannot-get-url-refresh)
-// if (process.env.NODE_ENV === 'production') {
-//   app.get('/*', (req, res) =>
-//     res.status(200).sendFile(path.join(__dirname, '../client/build/index.html'))
-//   );
-// }
+app.get('/', (req, res) => {
+  const indexPath = path.join(__dirname, '../client/build/index.html');
+  return res.status(200).sendFile(indexPath);
+})
 
 
 /*
