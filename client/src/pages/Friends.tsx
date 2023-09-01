@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
-import { addFriend, getFriends } from '../features/friends/friendsSlice';
+import { getFriends } from '../features/friends/friendsSlice';
+import { addFriend } from '../features/myFriends/myFriendsSlice';
 
 interface FriendType {
   user_id: string;
@@ -27,11 +28,13 @@ function Friends() {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { friends, isError, isSuccess } = useSelector((state: RootState) => state.friends);
+  const { myFriends } = useSelector((state: RootState) => state.myFriends);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(addFriend({ friend }) as any);
-    setFriend('');
+    if (user && userInfo) {
+      setFriend('');
+    }
   };
 
   const userInfo = JSON.parse(localStorage.getItem('user') || '');
@@ -49,13 +52,11 @@ function Friends() {
     dispatch(getFriends() as any);
   }, [user, navigate, isError, dispatch, isSuccess]);
 
-  console.log(friends);
-
-  // useEffect(() => {
-  //   const filtered = friends.filter((friendItem) => friendItem.username.toLowerCase().includes(friend.toLowerCase()));
-  //   setFilteredFriends(filtered);
-  // }, [friend, friends]);
-  // console.log(friend);
+  useEffect(() => {
+    const filtered = friends.filter((friendItem) => friendItem.username.toLowerCase().includes(friend.toLowerCase()));
+    setFilteredFriends(filtered);
+  }, [friend, friends]);
+  console.log(myFriends);
 
   return (
     <>
@@ -63,25 +64,25 @@ function Friends() {
         <Sidebar />
         <div className="flex-1 ml-80">
           <div className="mr-64 p-20 pt-24 border-r-[1.5px] h-full right-0">
-            <div className="mt-4">
-              <form onSubmit={onSubmit} className="flex gap-5 items-center">
+            <div className="mt-4 relative">
+              <form onSubmit={onSubmit} className=" items-center">
                 <input
-                  className="w-[250px] p-2 border border-gray-300 rounded mt-1"
+                  className="w-[250px] p-2 border border-gray-300 rounded pr-10 mt-1"
                   type="text"
-                  placeholder="Username"
+                  placeholder="Search by username"
                   id="username"
                   name="username"
                   value={friend}
                   onChange={(e) => setFriend(e.target.value)}
                 />
-                <button className="flex items-center justify-center w-[75px] h-10 rounded-md text-white bg-blue-500 transform hover:scale-101.5 gap-1" type="submit">
-                  <svg className="w-6 h-6 pt-0.5 pl-0.5 text-white" fill="currentColor">
-                    <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
+                <div className="right-3 top-2 text-gray-400">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M13.293 14.293a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414zM10 16a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
                   </svg>
-                  Add
-                </button>
+                </div>
               </form>
             </div>
+
             <section className="text-gray-600 ">
               <div className="pt-10">
                 <div className="max-h-[550px] w-[550px] overflow-y-scroll">
@@ -100,7 +101,10 @@ function Friends() {
                             </tr>
                           </thead>
                           <tbody className="text-sm divide-y divide-gray-100">
-                            {friends.map((item, index) => {
+                            {filteredFriends.map((item, index) => {
+                              const isFriendAdded = myFriends.some((friendArray) => friendArray[0]?.friend_id === item.user_id);
+                              console.log(isFriendAdded);
+
                               return (
                                 <tr key={index}>
                                   <td className="p-2 whitespace-nowrap">
@@ -113,9 +117,13 @@ function Friends() {
                                   </td>
                                   <td className="flex justify-center items-center">
                                     <div className="mt-2 mb-2">
-                                      <button onClick={() => addClick(item.user_id)} className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 ">
-                                        Follow
-                                      </button>
+                                      {isFriendAdded ? (
+                                        <button className="bg-gray-200 text-black rounded-lg px-4 py-2">Unfollow</button>
+                                      ) : (
+                                        <button onClick={() => addClick(item.user_id)} className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2">
+                                          Follow
+                                        </button>
+                                      )}
                                     </div>
                                   </td>
                                 </tr>
