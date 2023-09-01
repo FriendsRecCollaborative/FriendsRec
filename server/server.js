@@ -26,10 +26,6 @@ app.get('/', (req, res) => {
 })
 
 
-/*
- * To-Do: Add a 404 page backup route
- */
-
 app.post('/api/map', async (req, res, next) => {
   const { lat, lng } = req.body.location
   try {
@@ -44,6 +40,11 @@ app.post('/api/map', async (req, res, next) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+
+app.get('*', (req, res, next) => {
+  const indexPath = path.join(__dirname, '../client/build/index.html');
+  return res.status(200).sendFile(indexPath); 
+})
 
 app.use((err, req, res, next) => {
   const defaultErr = {
