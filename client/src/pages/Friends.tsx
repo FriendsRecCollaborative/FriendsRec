@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../app/store';
 import { getFriends } from '../features/friends/friendsSlice';
-import { addFriend } from '../features/myFriends/myFriendsSlice';
+import { addFriend, removeFriend } from '../features/myFriends/myFriendsSlice';
 import { getMyFriends } from '../features/myFriends/myFriendsSlice';
 
 interface FriendType {
@@ -28,28 +28,23 @@ function Friends() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { friends, isError, isSuccess } = useSelector((state: RootState) => state.friends);
+  const { friends } = useSelector((state: RootState) => state.friends);
   const { myFriends } = useSelector((state: RootState) => state.myFriends);
-
-  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (user && userInfo) {
-  //     setFriend('');
-  //   }
-  // };
 
   const userInfo = JSON.parse(localStorage.getItem('user') || '');
 
   const addClick = async (user_id: string) => {
     if (user && userInfo) {
-      dispatch(addFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+      await dispatch(addFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+      dispatch(getMyFriends() as any);
     }
   };
 
   const removeClick = async (user_id: string) => {
-    // if (user && userInfo) {
-    //   dispatch(removeFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
-    // }
+    if (user && userInfo) {
+      dispatch(removeFriend({ userId: userInfo.user_id, friendId: user_id }) as any);
+      dispatch(getMyFriends() as any);
+    }
   };
 
   useEffect(() => {
@@ -57,15 +52,12 @@ function Friends() {
       navigate('/');
     }
     dispatch(getFriends() as any);
-  }, [user, navigate, isError, dispatch, isSuccess]);
+    dispatch(getMyFriends() as any);
+  }, [user, dispatch, navigate]);
 
   useEffect(() => {
     const filtered = friends.filter((friendItem) => friendItem.username.toLowerCase().includes(friend.toLowerCase()));
     setFilteredFriends(filtered);
-  }, [friend, friends]);
-
-  useEffect(() => {
-    dispatch(getMyFriends() as any);
   }, [friend, friends]);
 
   return (
@@ -114,7 +106,7 @@ function Friends() {
                           </thead>
                           <tbody className="text-sm divide-y divide-gray-100">
                             {filteredFriends.map((item, index) => {
-                              const isFriendAdded = myFriends.some((friendArray) => friendArray[0]?.friend_id === item.user_id);
+                              const isFriendAdded = myFriends.some((friendArray) => friendArray.friend_id === item.user_id);
                               return (
                                 <tr key={index}>
                                   <td className="p-2 whitespace-nowrap">
@@ -157,26 +149,3 @@ function Friends() {
 }
 
 export default Friends;
-
-{
-  /* <div className="mt-4 relative">
-<form className="items-center">
-  <div className="relative">
-    <input
-      className="w-[250px] p-2 pl-8 border border-gray-300 rounded mt-1"
-      type="text"
-      placeholder="Search by username"
-      id="username"
-      name="username"
-      value={friend}
-      onChange={(e) => setFriend(e.target.value)}
-    />
-    <div className="absolute right-[10%] top-[50%] transform -translate-y-1/2 text-gray-400">
-      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M13.293 14.293a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414zM10 16a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
-      </svg>
-    </div>
-  </div>
-</form>
-</div> */
-}

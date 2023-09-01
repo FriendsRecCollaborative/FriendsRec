@@ -1,8 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout, reset } from '../src/features/auth/authSlice';
-import { RootState } from './app/store';
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -24,7 +23,7 @@ function Sidebar() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
+  // const { user } = useSelector((state: RootState) => state.auth);
 
   const logoutClick = () => {
     navigate('/');
