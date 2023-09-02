@@ -6,6 +6,7 @@
   "scripts": {
     "dependency": "concurrently \" cd ./client && npm install\" \"cd ./server && npm install\" ",
     "build": "cd ./client && npm run build",
+    "dev": "concurrently \" cd ./client && npm start \" \" cd ./server && npm run dev\"",
     "start": "cd ./server && npm start"
   },
   "repository": {
