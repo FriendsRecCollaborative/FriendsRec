@@ -10,6 +10,7 @@ interface NewsfeedItem {
   name: string;
   restaurant_name: string;
   review: string;
+  address: string;
 }
 
 function Home() {
@@ -23,9 +24,7 @@ function Home() {
       navigate('/');
     }
     dispatch(getNewsfeed() as any);
-  }, [user, navigate, isError, dispatch, isSuccess]);
-
-  console.log(newsfeed);
+  }, [user, navigate, isError, isSuccess]);
 
   const thisWeek: NewsfeedItem[] = [];
   const lastWeek: NewsfeedItem[] = [];
@@ -52,6 +51,16 @@ function Home() {
     }
   });
 
+  const parseAddress = (address: string) => {
+    if (address === null) {
+      const cityState = 'Somewhere, CA';
+      return cityState;
+    }
+    const parts = address.split(',');
+    const cityState = parts.slice(1, 3).join(',');
+    return cityState;
+  };
+
   return (
     <>
       <div className="flex bg-gray-50">
@@ -60,39 +69,10 @@ function Home() {
           <div className="lg:mr-64 md:mr-0 p-20 pt-24 border-r-[1.5px] h-full right-0 bg-gray-50">
             <time className="text-lg font-semibold text-gray-900 dark:text-white">This Week</time>
             <div className="mt-3 p-5 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-              {thisWeek.map((item, index) => (
-                <ol key={index} className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
-                  <li>
-                    <div className="items-center block p-3 sm:flex">
-                      <div className="text-gray-600 dark:text-gray-400">
-                        <div className="text-base font-normal">
-                          <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
-                          <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
-                        </div>
-                        <div className="text-sm font-normal">"{item.review}"</div>
-                        <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                          {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
-                          {new Date(item.created_at).toLocaleTimeString('en-US', {
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            second: 'numeric',
-                            hour12: true,
-                          })}{' '}
-                          &middot; San Francisco, CA
-                        </span>
-                      </div>
-                    </div>
-                  </li>
-                </ol>
-              ))}
-            </div>
-            <time className="text-lg font-semibold text-gray-900 dark:text-white">Last Week</time>
-            <div className="mt-3 p-5 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-              {lastWeek.length === 0 ? (
-                <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
-              ) : (
-                lastWeek.map((item, index) => (
-                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+              {thisWeek.map((item, index) => {
+                const parsedAddress = parseAddress(item.address);
+                return (
+                  <ol key={index} className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                     <li>
                       <div className="items-center block p-3 sm:flex">
                         <div className="text-gray-600 dark:text-gray-400">
@@ -109,13 +89,48 @@ function Home() {
                               second: 'numeric',
                               hour12: true,
                             })}{' '}
-                            &middot; San Francisco, CA
+                            &middot; {parsedAddress}
                           </span>
                         </div>
                       </div>
                     </li>
                   </ol>
-                ))
+                );
+              })}
+            </div>
+            <time className="text-lg font-semibold text-gray-900 dark:text-white">Last Week</time>
+            <div className="mt-3 p-5 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+              {lastWeek.length === 0 ? (
+                <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
+              ) : (
+                lastWeek.map((item, index) => {
+                  const parsedAddress = parseAddress(item.address);
+                  return (
+                    <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                      <li>
+                        <div className="items-center block p-3 sm:flex">
+                          <div className="text-gray-600 dark:text-gray-400">
+                            <div className="text-base font-normal">
+                              <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                              <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
+                            </div>
+                            <div className="text-sm font-normal">"{item.review}"</div>
+                            <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                              {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
+                              {new Date(item.created_at).toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric',
+                                hour12: true,
+                              })}{' '}
+                              &middot; {parsedAddress}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    </ol>
+                  );
+                })
               )}
             </div>
             <time className="text-lg font-semibold text-gray-900 dark:text-white">Last Month</time>
@@ -123,31 +138,34 @@ function Home() {
               {lastMonth.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
               ) : (
-                lastMonth.map((item, index) => (
-                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
-                    <li>
-                      <div className="items-center block p-3 sm:flex">
-                        <div className="text-gray-600 dark:text-gray-400">
-                          <div className="text-base font-normal">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
-                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
+                lastMonth.map((item, index) => {
+                  const parsedAddress = parseAddress(item.address);
+                  return (
+                    <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                      <li>
+                        <div className="items-center block p-3 sm:flex">
+                          <div className="text-gray-600 dark:text-gray-400">
+                            <div className="text-base font-normal">
+                              <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                              <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
+                            </div>
+                            <div className="text-sm font-normal">"{item.review}"</div>
+                            <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                              {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
+                              {new Date(item.created_at).toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric',
+                                hour12: true,
+                              })}{' '}
+                              &middot; {parsedAddress}
+                            </span>
                           </div>
-                          <div className="text-sm font-normal">"{item.review}"</div>
-                          <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                            {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
-                            {new Date(item.created_at).toLocaleTimeString('en-US', {
-                              hour: 'numeric',
-                              minute: 'numeric',
-                              second: 'numeric',
-                              hour12: true,
-                            })}{' '}
-                            &middot; San Francisco, CA
-                          </span>
                         </div>
-                      </div>
-                    </li>
-                  </ol>
-                ))
+                      </li>
+                    </ol>
+                  );
+                })
               )}
             </div>
             <time className="text-lg font-semibold text-gray-900 dark:text-white">Beyond</time>
@@ -155,31 +173,35 @@ function Home() {
               {beyond.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
               ) : (
-                beyond.map((item, index) => (
-                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
-                    <li>
-                      <div className="items-center block p-3 sm:flex">
-                        <div className="text-gray-600 dark:text-gray-400">
-                          <div className="text-base font-normal">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
-                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
+                beyond.map((item, index) => {
+                  const parsedAddress = parseAddress(item.address);
+
+                  return (
+                    <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                      <li>
+                        <div className="items-center block p-3 sm:flex">
+                          <div className="text-gray-600 dark:text-gray-400">
+                            <div className="text-base font-normal">
+                              <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                              <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
+                            </div>
+                            <div className="text-sm font-normal">"{item.review}"</div>
+                            <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                              {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
+                              {new Date(item.created_at).toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric',
+                                hour12: true,
+                              })}{' '}
+                              &middot; {parsedAddress}
+                            </span>
                           </div>
-                          <div className="text-sm font-normal">"{item.review}"</div>
-                          <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                            {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{' '}
-                            {new Date(item.created_at).toLocaleTimeString('en-US', {
-                              hour: 'numeric',
-                              minute: 'numeric',
-                              second: 'numeric',
-                              hour12: true,
-                            })}{' '}
-                            &middot; San Francisco, CA
-                          </span>
                         </div>
-                      </div>
-                    </li>
-                  </ol>
-                ))
+                      </li>
+                    </ol>
+                  );
+                })
               )}
             </div>
           </div>
