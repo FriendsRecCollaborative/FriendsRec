@@ -8,6 +8,7 @@ reviewController.getAllReviews = (req, res, next) => {
     r.name AS restaurant_name,
     r.address AS address,
     recs.review,
+    recs.recs_id,
     recs.created_at
    FROM 
     recs
