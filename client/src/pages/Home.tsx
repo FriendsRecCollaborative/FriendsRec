@@ -6,11 +6,10 @@ import { RootState } from '../app/store';
 import { getNewsfeed } from '../features/newsfeed/newsfeedSlice';
 
 interface NewsfeedItem {
-  recs_id: number;
-  user_id: number;
-  restaurant_id: number;
-  review: string;
   created_at: string;
+  name: string;
+  restaurant_name: string;
+  review: string;
 }
 
 function Home() {
@@ -25,6 +24,8 @@ function Home() {
     }
     dispatch(getNewsfeed() as any);
   }, [user, navigate, isError, dispatch, isSuccess]);
+
+  console.log(newsfeed);
 
   const thisWeek: NewsfeedItem[] = [];
   const lastWeek: NewsfeedItem[] = [];
@@ -51,24 +52,22 @@ function Home() {
     }
   });
 
-  console.log(sortedNewsfeed);
-
   return (
     <>
       <div className="flex bg-gray-50">
         <Sidebar />
         <div className="flex-1 ml-80">
-          <div className="mr-64 p-20 pt-24 border-r-[1.5px] h-full right-0 bg-gray-50">
+          <div className="lg:mr-64 md:mr-0 p-20 pt-24 border-r-[1.5px] h-full right-0 bg-gray-50">
             <time className="text-lg font-semibold text-gray-900 dark:text-white">This Week</time>
             <div className="mt-3 p-5 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-              {thisWeek.map((item) => (
-                <ol key={item.recs_id} className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+              {thisWeek.map((item, index) => (
+                <ol key={index} className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                   <li>
                     <div className="items-center block p-3 sm:flex">
                       <div className="text-gray-600 dark:text-gray-400">
                         <div className="text-base font-normal">
-                          <span className="font-medium text-gray-900 dark:text-white">{item.user_id}</span> recommends{' '}
-                          <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_id}.</span>
+                          <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                          <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
                         </div>
                         <div className="text-sm font-normal">"{item.review}"</div>
                         <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -92,14 +91,14 @@ function Home() {
               {lastWeek.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
               ) : (
-                lastWeek.map((item) => (
-                  <ol key={item.recs_id} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                lastWeek.map((item, index) => (
+                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
                     <li>
                       <div className="items-center block p-3 sm:flex">
                         <div className="text-gray-600 dark:text-gray-400">
                           <div className="text-base font-normal">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.user_id}</span> recommends{' '}
-                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_id}.</span>
+                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
                           </div>
                           <div className="text-sm font-normal">"{item.review}"</div>
                           <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -124,14 +123,14 @@ function Home() {
               {lastMonth.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
               ) : (
-                lastMonth.map((item) => (
-                  <ol key={item.recs_id} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                lastMonth.map((item, index) => (
+                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
                     <li>
                       <div className="items-center block p-3 sm:flex">
                         <div className="text-gray-600 dark:text-gray-400">
                           <div className="text-base font-normal">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.user_id}</span> recommends{' '}
-                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_id}.</span>
+                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
                           </div>
                           <div className="text-sm font-normal">"{item.review}"</div>
                           <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -156,14 +155,14 @@ function Home() {
               {beyond.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-center py-4">No history</p>
               ) : (
-                beyond.map((item) => (
-                  <ol key={item.recs_id} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
+                beyond.map((item, index) => (
+                  <ol key={index} className="mt-3 divide-y divide-gray-200 dark:divide-gray-700">
                     <li>
                       <div className="items-center block p-3 sm:flex">
                         <div className="text-gray-600 dark:text-gray-400">
                           <div className="text-base font-normal">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.user_id}</span> recommends{' '}
-                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_id}.</span>
+                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span> recommends{' '}
+                            <span className="font-medium text-gray-900 dark:text-white">{item.restaurant_name}.</span>
                           </div>
                           <div className="text-sm font-normal">"{item.review}"</div>
                           <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">

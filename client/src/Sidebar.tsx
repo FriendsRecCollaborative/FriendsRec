@@ -1,8 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout, reset } from '../src/features/auth/authSlice';
-import { RootState } from './app/store';
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -24,7 +23,7 @@ function Sidebar() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
+  // const { user } = useSelector((state: RootState) => state.auth);
 
   const logoutClick = () => {
     navigate('/');
@@ -87,7 +86,7 @@ function Sidebar() {
               <li>
                 <div
                   ref={menuRef}
-                  className={`relative flex items-center p-2 mt-80 text-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${open ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
+                  className={`relative flex items-center p-2 mt-20 text-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${open ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
                   onClick={toggleMenu}>
                   <svg className="w-5 h-5 pt-2 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
                     <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
