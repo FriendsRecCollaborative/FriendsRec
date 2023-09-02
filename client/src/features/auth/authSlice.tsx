@@ -13,8 +13,16 @@ interface UserLogin {
   password: string;
 }
 
+interface User {
+  email: string;
+  fullName: string;
+  joined: string;
+  user_id: number;
+  username: string;
+}
+
 const userString = localStorage.getItem('user');
-const user: UserRegister | null = userString ? JSON.parse(userString) : null;
+const user: User | null = userString ? JSON.parse(userString) : null;
 
 const initialState = {
   user: user,
@@ -58,6 +66,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
+      state.user = null;
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;

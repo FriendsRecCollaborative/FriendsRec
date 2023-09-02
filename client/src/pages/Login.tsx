@@ -35,8 +35,6 @@ function Login() {
     if (isSuccess || user) {
       navigate('/home');
     }
-
-    dispatch(reset());
   }, [user, isError, isSuccess, isLoading, navigate, dispatch]);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

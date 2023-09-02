@@ -60,6 +60,19 @@ function Friends() {
     setFilteredFriends(filtered);
   }, [friend, friends]);
 
+  const sortedFriends = [...filteredFriends].sort((a, b) => {
+    const isAFriend = myFriends.some((friendArray) => friendArray.friend_id === a.user_id);
+    const isBFriend = myFriends.some((friendArray) => friendArray.friend_id === b.user_id);
+
+    if (isAFriend && !isBFriend) {
+      return -1;
+    }
+    if (!isAFriend && isBFriend) {
+      return 1;
+    }
+    return 0;
+  });
+
   return (
     <>
       <div className="flex min-h-screen bg-gray-50">
@@ -68,13 +81,13 @@ function Friends() {
           <div className="mr-64 p-20 pt-24 border-r-[1.5px] h-full right-0">
             <div className="relative w-96">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none">
+                <svg className="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                 </svg>
               </div>
               <input
                 type="search"
-                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full p-4 pl-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search username"
                 id="username"
                 name="username"
@@ -105,7 +118,7 @@ function Friends() {
                             </tr>
                           </thead>
                           <tbody className="text-sm divide-y divide-gray-100">
-                            {filteredFriends.map((item, index) => {
+                            {sortedFriends.map((item, index) => {
                               const isFriendAdded = myFriends.some((friendArray) => friendArray.friend_id === item.user_id);
                               return (
                                 <tr key={index}>
