@@ -44,7 +44,7 @@ npm run dependency
 ### User Authentication and Profiles
 
 Users can create accounts and log in securely. A profile is created with their name, profile photo, joined date, and a list of their own recommendations.
-![My Profile](client/public/images/my-image.png)
+![My Profile](client/public/images/Profile.png)
 
 ### Restaurant Recommendations Newsfeed
 
