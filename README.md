@@ -2,7 +2,7 @@
   <h1 align="center"><b>Friends Rec</b></h1>
 </p>
 <h2 align="center">
-  An application that leverages their personal social connections to provide restaurant recommendations.
+  An application that leverages your personal social connections to provide restaurant recommendations.
 </h2>
   
 <!-- TABLE OF CONTENTS -->
