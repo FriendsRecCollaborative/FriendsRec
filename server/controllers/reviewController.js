@@ -6,12 +6,17 @@ reviewController.getAllReviews = (req, res, next) => {
   SELECT 
     u.full_name AS name,
     r.name AS restaurant_name,
+    r.address AS restaurant_address,
+    recs.recs_id,
     recs.review,
     recs.created_at
-   FROM 
-    recs
-     JOIN users u ON recs.user_id = u.user_id
-     JOIN restaurants r ON recs.restaurant_id = r.restaurant_id`;
+  FROM 
+      recs
+  JOIN 
+      users u ON recs.user_id = u.user_id
+  JOIN 
+      restaurants r ON recs.restaurant_id = r.restaurant_id;
+  `;
   db.query(query) 
     .then((data) => {
         res.locals = data.rows;
@@ -102,11 +107,13 @@ reviewController.createReview = async (req, res, next)  => {
       console.log('Restaurant already exists');
     }
 
+    // Check if a recommendation from the user already exists for the restuarant 
     const checkRecs = 'SELECT recs_id FROM recs WHERE user_id = $1 AND restaurant_id = $2';
     const recsResult = await db.query(checkRecs, [userId, newRestaurantId]);
     let recQuery
     let values = []
 
+    // If recommendation for restaruant does not exists then insert it into DB, if it does exist then update DB
     if (recsResult.rows.length === 0) {
       recQuery = `
       INSERT INTO recs 
