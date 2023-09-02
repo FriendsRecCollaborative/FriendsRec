@@ -8,7 +8,7 @@ reviewController.getAllReviews = (req, res, next) => {
     r.name AS restaurant_name,
     r.address AS address,
     recs.review,
-    rec.recs_id,
+    recs.recs_id,
     recs.created_at
    FROM 
     recs
@@ -98,9 +98,9 @@ reviewController.getAllMyReviews = async (req, res, next) => {
     });
 };
 
-reviewController.getUserReview = (req, res, next)  => {
-    const { id } = req.params;
-    const query = `
+reviewController.getUserReview = (req, res, next) => {
+  const { id } = req.params;
+  const query = `
     SELECT u.username, u.full_name, r.name, r.address, recs.review, recs.created_at
     FROM recs
     JOIN users AS u ON recs.user_id = u.user_id
@@ -140,15 +140,15 @@ reviewController.createReview = async (req, res, next) => {
     console.log('Restaurant already exists');
   }
 
-    // Check if a recommendation from the user already exists for the restuarant 
-    const checkRecs = 'SELECT recs_id FROM recs WHERE user_id = $1 AND restaurant_id = $2';
-    const recsResult = await db.query(checkRecs, [userId, newRestaurantId]);
-    let recQuery
-    let values = []
+  // Check if a recommendation from the user already exists for the restuarant
+  const checkRecs = 'SELECT recs_id FROM recs WHERE user_id = $1 AND restaurant_id = $2';
+  const recsResult = await db.query(checkRecs, [userId, newRestaurantId]);
+  let recQuery;
+  let values = [];
 
-    // If recommendation for restaruant does not exists then insert it into DB, if it does exist then update DB
-    if (recsResult.rows.length === 0) {
-      recQuery = `
+  // If recommendation for restaruant does not exists then insert it into DB, if it does exist then update DB
+  if (recsResult.rows.length === 0) {
+    recQuery = `
       INSERT INTO recs 
       (user_id, restaurant_id, review) 
       VALUES($1, $2, $3) returning *;`;

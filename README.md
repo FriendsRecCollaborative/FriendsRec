@@ -35,10 +35,7 @@ Please perform the following steps to install:
 ```
 npm run dependency
 ```
-```
-npm run dev
-```
-   
+
 4. Run `npm run dev` in the root directory.
 5. Run `http://localhost:3000/` on your browser to start sharing your recommendations with your friends!
 
@@ -47,6 +44,12 @@ npm run dev
 ### User Authentication and Profiles
 
 Users can create accounts and log in securely. A profile is created with their name, profile photo, joined date, and a list of their own recommendations.
+![My Profile](client/public/images/my-image.png)
+
+### Restaurant Recommendations Newsfeed
+
+Users can create accounts and log in securely. A profile is created with their name, profile photo, joined date, and a list of their own recommendations.
+![My Profile](client/public/images/my-image.png)
 
 ## <b>Tech Stack</b>
 
