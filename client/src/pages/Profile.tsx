@@ -36,7 +36,7 @@ function Profile() {
   const newsfeed: NewsfeedItem[] = useSelector((state: RootState) => state.newsfeed.newsfeed);
   const myReviews: myReviews[] = useSelector((state: RootState) => state.newsfeed.myReviews);
   // console.log(newsfeed);
-  console.log(myReviews);
+  // console.log(myReviews);
 
   useEffect(() => {
     dispatch(getMyFriends() as any);
@@ -61,7 +61,17 @@ function Profile() {
     const cityState = parts.slice(1, 3).join(',');
     return cityState;
   };
-
+  const generateInitials = (fullName: string) => {
+    let initials = '';
+    let words = fullName.split(' ');
+    for (const word of words) {
+      if (word.length > 0) {
+        initials += word[0].toUpperCase();
+      }
+    }
+    return initials;
+  };
+  const name = generateInitials(fullName);
   return (
     <>
       <div className="flex h-screen bg-gray-50">
@@ -70,7 +80,7 @@ function Profile() {
           <main className="mr-64 p-20 pt-10 border-r-[1.5px] h-full right-0">
             <div className="p-5 mb-4 border-b-[1.5px] bg-gray-50 dark:bg-gray-800 dark:border-gray-700 flex items-center">
               <div className="w-[200px]">
-                <img className="rounded-full w-28 h-28 m-auto" src="https://avatars.githubusercontent.com/u/31088037?v=4" alt="profile"></img>
+                <div className="rounded-full w-28 h-28 m-auto bg-blue-500 text-white flex items-center justify-center text-4xl">{name}</div>
                 <h3 className="font-bold text-xl mt-2 text-center">{fullName}</h3>
                 <p className="text-center text-sm text-gray-900">Joined {joinedDate}</p>
               </div>
