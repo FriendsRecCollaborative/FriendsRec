@@ -45,7 +45,9 @@ export const newsfeedSlice = createSlice({
   name: 'newsfeed',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: (state) => {
+      state.myReviews = [];
+    },
   },
   extraReducers: (builder) => {
     builder

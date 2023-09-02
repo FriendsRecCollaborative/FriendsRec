@@ -30,12 +30,10 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
 };
-console.log(initialState.user);
 
 export const register = createAsyncThunk('auth/register', async (userData: UserRegister) => {
   try {
     const response = await authService.register(userData);
-    console.log(response);
     return response;
   } catch (error) {
     console.log(`${error}`);
@@ -46,7 +44,6 @@ export const register = createAsyncThunk('auth/register', async (userData: UserR
 export const login = createAsyncThunk('auth/login', async (userData: UserLogin) => {
   try {
     const response = await authService.login(userData);
-    console.log(response);
     return response;
   } catch (error) {
     console.log(`${error}`);
@@ -69,6 +66,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
+      state.user = null;
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;

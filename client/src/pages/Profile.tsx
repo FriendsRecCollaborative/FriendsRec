@@ -2,9 +2,10 @@ import Sidebar from '../Sidebar';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../app/store';
 import { getNewsfeed, getMyReviews } from '../features/newsfeed/newsfeedSlice';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getMyFollowers } from '../features/myFriends/myFriendsSlice';
 import { getMyFriends } from '../features/myFriends/myFriendsSlice';
+import { reset } from '../../src/features/auth/authSlice';
 
 interface NewsfeedItem {
   created_at: string;
@@ -26,6 +27,7 @@ interface myReviews {
   name: string;
   review: string;
   username: string;
+  created_at: string;
 }
 
 function Profile() {
@@ -35,14 +37,12 @@ function Profile() {
   const { myFriends, myFollowers, isLoading } = useSelector((state: RootState) => state.myFriends);
   const newsfeed: NewsfeedItem[] = useSelector((state: RootState) => state.newsfeed.newsfeed);
   const myReviews: myReviews[] = useSelector((state: RootState) => state.newsfeed.myReviews);
-  // console.log(newsfeed);
-  // console.log(myReviews);
   useEffect(() => {
     dispatch(getMyFriends() as any);
     dispatch(getMyFollowers() as any);
     dispatch(getMyReviews() as any);
     dispatch(getNewsfeed() as any);
-  }, [user?.username]);
+  }, [user, dispatch]);
 
   const formatDate = (inputDate: string) => {
     const dateObject = new Date(inputDate);
@@ -114,7 +114,10 @@ function Profile() {
                             <span className="font-medium text-gray-900 dark:text-white">{item.name}</span>
                           </div>
                           <div className="text-sm font-normal">"{item.review}"</div>
-                          <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">9/1/2023 &middot; {parsedAddress}</span>
+
+                          <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            {new Date(item.created_at).toLocaleDateString('en-US')} &middot;{parsedAddress}
+                          </span>
                         </div>
                       </div>
                     </li>
