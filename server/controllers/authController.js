@@ -28,7 +28,7 @@ authController.register = async (req, res, next) => {
       user_id: userInfo.user_id,
       joined: userInfo.created_at,
     };
-    db.release();
+
     return next();
   } catch (err) {
     console.log(err);
@@ -64,7 +64,6 @@ authController.login = async (req, res, next) => {
       user_id: userInfo.user_id,
       joined: userInfo.created_at,
     };
-    db.release();
     return next();
   } catch (err) {
     console.log(err);
@@ -80,7 +79,6 @@ authController.getAllUsers = (req, res, next) => {
   db.query(query)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -98,7 +96,6 @@ authController.getUser = (req, res, next) => {
   db.query(query, values)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -116,7 +113,6 @@ authController.follow = (req, res, next) => {
   db.query(query, values)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -135,7 +131,6 @@ authController.unfollow = (req, res, next) => {
 
   db.query(query, values)
     .then((data) => {
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -152,7 +147,6 @@ authController.getFollowing = async (req, res, next) => {
   const values = [id];
   const response = await db.query(query, values);
   res.locals.following = response.rows;
-  db.release();
   return next();
 };
 
@@ -162,7 +156,6 @@ authController.getFollowers = async (req, res, next) => {
   const values = [id];
   const response = await db.query(query, values);
   res.locals.followers = response.rows;
-  db.release();
   return next();
 };
 module.exports = authController;
