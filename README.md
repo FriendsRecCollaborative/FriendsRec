@@ -35,10 +35,7 @@ Please perform the following steps to install:
 ```
 npm run dependency
 ```
-```
-npm run dev
-```
-   
+
 4. Run `npm run dev` in the root directory.
 5. Run `http://localhost:3000/` on your browser to start sharing your recommendations with your friends!
 
@@ -47,6 +44,21 @@ npm run dev
 ### User Authentication and Profiles
 
 Users can create accounts and log in securely. A profile is created with their name, profile photo, joined date, and a list of their own recommendations.
+![My Profile](client/public/images/Profile.png)
+
+### Restaurant Recommendations
+
+Users can search and recommend a restaurant to share with their social connections. The users can also filter to view your and your friends recommendations on the map.
+
+### Newsfeed
+
+Users can view restaurant recommendations made by their friends, which includes details to the restaurant's name, location, and a brief comment from the friend who made the recommendation.
+![My Newsfeed](client/public/images/Newsfeed.png)
+
+### Friends
+
+Users can connect with their friends on the platform, which allows users to see the recommendations in their feed.
+![My Friends](client/public/images/Friends.png)
 
 ## <b>Tech Stack</b>
 
