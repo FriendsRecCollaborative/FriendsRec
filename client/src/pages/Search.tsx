@@ -94,10 +94,10 @@ function Search() {
             name: friendsRecs[i].restaurant_name,
             geometry: {location: {lat: 0, lng: 0}},
             friendsName: friendsRecs[i].name,
-            vicinity: friendsRecs[i].restaurant_address,
+            vicinity: friendsRecs[i].address,
             recID: friendsRecs[i].recs_id
           }
-          geocoder.geocode({ address: friendsRecs[i].restaurant_address }, (results, status) => {
+          geocoder.geocode({ address: friendsRecs[i].address }, (results, status) => {
             if (results) {
               if (status === 'OK' && results.length > 0) {
                 newArrayObj.geometry.location.lat = results[0].geometry.location.lat();
