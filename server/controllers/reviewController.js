@@ -63,7 +63,7 @@ reviewController.getAllMyReviews = async (req, res, next) => {
 reviewController.getUserReview = (req, res, next)  => {
     const { id } = req.params;
     const query = `
-    SELECT u.username, u.full_name, r.name, r.address, recs.review
+    SELECT u.username, u.full_name, r.name, r.address, recs.review, recs.created_at
     FROM recs
     JOIN users AS u ON recs.user_id = u.user_id
     JOIN restaurants AS r ON recs.restaurant_id = r.restaurant_id
