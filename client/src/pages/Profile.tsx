@@ -32,18 +32,17 @@ function Profile() {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { myFriends, myFollowers } = useSelector((state: RootState) => state.myFriends);
+  const { myFriends, myFollowers, isLoading } = useSelector((state: RootState) => state.myFriends);
   const newsfeed: NewsfeedItem[] = useSelector((state: RootState) => state.newsfeed.newsfeed);
   const myReviews: myReviews[] = useSelector((state: RootState) => state.newsfeed.myReviews);
   // console.log(newsfeed);
   // console.log(myReviews);
-
   useEffect(() => {
     dispatch(getMyFriends() as any);
     dispatch(getMyFollowers() as any);
     dispatch(getMyReviews() as any);
     dispatch(getNewsfeed() as any);
-  }, [user, dispatch]);
+  }, [user?.username]);
 
   const formatDate = (inputDate: string) => {
     const dateObject = new Date(inputDate);

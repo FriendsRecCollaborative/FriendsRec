@@ -30,6 +30,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
 };
+console.log(initialState.user);
 
 export const register = createAsyncThunk('auth/register', async (userData: UserRegister) => {
   try {
@@ -45,6 +46,7 @@ export const register = createAsyncThunk('auth/register', async (userData: UserR
 export const login = createAsyncThunk('auth/login', async (userData: UserLogin) => {
   try {
     const response = await authService.login(userData);
+    console.log(response);
     return response;
   } catch (error) {
     console.log(`${error}`);
