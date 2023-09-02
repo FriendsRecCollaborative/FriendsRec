@@ -13,8 +13,16 @@ interface UserLogin {
   password: string;
 }
 
+interface User {
+  email: string;
+  fullName: string;
+  joined: string;
+  user_id: number;
+  username: string;
+}
+
 const userString = localStorage.getItem('user');
-const user: UserRegister | null = userString ? JSON.parse(userString) : null;
+const user: User | null = userString ? JSON.parse(userString) : null;
 
 const initialState = {
   user: user,
@@ -26,6 +34,7 @@ const initialState = {
 export const register = createAsyncThunk('auth/register', async (userData: UserRegister) => {
   try {
     const response = await authService.register(userData);
+    console.log(response);
     return response;
   } catch (error) {
     console.log(`${error}`);

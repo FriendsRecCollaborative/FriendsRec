@@ -25,6 +25,8 @@ function Home() {
     dispatch(getNewsfeed() as any);
   }, [user, navigate, isError, dispatch, isSuccess]);
 
+  console.log(newsfeed);
+
   const thisWeek: NewsfeedItem[] = [];
   const lastWeek: NewsfeedItem[] = [];
   const lastMonth: NewsfeedItem[] = [];

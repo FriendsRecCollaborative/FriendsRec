@@ -1,6 +1,67 @@
 import Sidebar from '../Sidebar';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../app/store';
+import { getNewsfeed, getMyReviews } from '../features/newsfeed/newsfeedSlice';
+import { useEffect } from 'react';
+import { getMyFollowers } from '../features/myFriends/myFriendsSlice';
+import { getMyFriends } from '../features/myFriends/myFriendsSlice';
+
+interface NewsfeedItem {
+  created_at: string;
+  name: string;
+  restaurant_name: string;
+  review: string;
+}
+interface User {
+  email: string;
+  fullName: string;
+  joined: string;
+  user_id: number;
+  username: string;
+}
+
+interface myReviews {
+  address: string;
+  full_name: string;
+  name: string;
+  review: string;
+  username: string;
+}
 
 function Profile() {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { myFriends, myFollowers } = useSelector((state: RootState) => state.myFriends);
+  const newsfeed: NewsfeedItem[] = useSelector((state: RootState) => state.newsfeed.newsfeed);
+  const myReviews: myReviews[] = useSelector((state: RootState) => state.newsfeed.myReviews);
+  // console.log(newsfeed);
+  console.log(myReviews);
+
+  useEffect(() => {
+    dispatch(getMyFriends() as any);
+    dispatch(getMyFollowers() as any);
+    dispatch(getMyReviews() as any);
+    dispatch(getNewsfeed() as any);
+  }, [user, dispatch]);
+
+  const formatDate = (inputDate: string) => {
+    const dateObject = new Date(inputDate);
+    const month = monthNames[dateObject.getMonth()];
+    const day = String(dateObject.getDate()).padStart(2, '0');
+    const year = dateObject.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const fullName = user ? user.fullName : 'John Smith';
+  const joinedDate = user ? formatDate(user.joined) : 'N/A';
+
+  const parseAddress = (address: string) => {
+    const parts = address.split(',');
+    const cityState = parts.slice(1, 3).join(',');
+    return cityState;
+  };
+
   return (
     <>
       <div className="flex h-screen bg-gray-50">
@@ -10,21 +71,21 @@ function Profile() {
             <div className="p-5 mb-4 border-b-[1.5px] bg-gray-50 dark:bg-gray-800 dark:border-gray-700 flex items-center">
               <div className="w-[200px]">
                 <img className="rounded-full w-28 h-28 m-auto" src="https://avatars.githubusercontent.com/u/31088037?v=4" alt="profile"></img>
-                <h3 className="font-bold text-xl mt-2 text-center">Andrew Larkin</h3>
-                <p className="pl-8 text-sm text-gray-900">Joined Aug 23, 2023</p>
+                <h3 className="font-bold text-xl mt-2 text-center">{fullName}</h3>
+                <p className="text-center text-sm text-gray-900">Joined {joinedDate}</p>
               </div>
               <div className="mb-14 w-[275px]">
                 <div className="grid grid-cols-3 gap-5">
                   <div className="text-center">
-                    <p>25</p>
+                    <p>{myReviews.length}</p>
                     <p>Recs</p>
                   </div>
                   <div className="text-center ">
-                    <p>10</p>
+                    <p>{myFollowers.length}</p>
                     <p>Followers</p>
                   </div>
                   <div className="text-center ">
-                    <p>35</p>
+                    <p>{myFriends.length}</p>
                     <p>Following</p>
                   </div>
                 </div>
@@ -33,53 +94,23 @@ function Profile() {
             <div className="ml-12">
               <p className="text-lg font-semibold text-gray-900 dark:text-white">My Activity</p>
               <ol className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
-                <li>
-                  <div className="items-center block mt-8 sm:flex">
-                    <div className="text-gray-600 dark:text-gray-400">
-                      <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">Andrew Larkin</span> recommends <span className="font-medium text-gray-900 dark:text-white">Five Guys.</span>
+                {myReviews.map((item, index) => {
+                  const parsedAddress = parseAddress(item.address);
+                  return (
+                    <li key={index}>
+                      <div className="items-center block mt-8 sm:flex">
+                        <div className="text-gray-600 dark:text-gray-400">
+                          <div className="text-base font-normal">
+                            <span className="font-medium text-gray-900 dark:text-white">{item.full_name}</span> recommended{' '}
+                            <span className="font-medium text-gray-900 dark:text-white">{item.name}</span>
+                          </div>
+                          <div className="text-sm font-normal">"{item.review}"</div>
+                          <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">9/1/2023 &middot; {parsedAddress}</span>
+                        </div>
                       </div>
-                      <div className="text-sm font-normal">"I think Five Guys is the best burger chain nationwide."</div>
-                      <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Aug, 16 2023 &middot; New York, NY</span>
-                    </div>
-                  </div>
-                  <div className="items-center block mt-5 sm:flex">
-                    <div className="text-gray-600 dark:text-gray-400">
-                      <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">Andrew Larkin</span> recommends <span className="font-medium text-gray-900 dark:text-white">McDonalds.</span>
-                      </div>
-                      <div className="text-sm font-normal">"I think Five Guys is the best burger chain nationwide."</div>
-                      <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Aug, 16 2023 &middot; New York, NY</span>
-                    </div>
-                  </div>
-                  <div className="items-center block mt-5 sm:flex">
-                    <div className="text-gray-600 dark:text-gray-400">
-                      <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">Andrew Larkin</span> recommends <span className="font-medium text-gray-900 dark:text-white">Taco Bell.</span>
-                      </div>
-                      <div className="text-sm font-normal">"I think Five Guys is the best burger chain nationwide."</div>
-                      <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Aug, 16 2023 &middot; New York, NY</span>
-                    </div>
-                  </div>
-                  <div className="items-center block mt-5 sm:flex">
-                    <div className="text-gray-600 dark:text-gray-400">
-                      <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">Andrew Larkin</span> recommends <span className="font-medium text-gray-900 dark:text-white">Shake Shack.</span>
-                      </div>
-                      <div className="text-sm font-normal">"I think Five Guys is the best burger chain nationwide."</div>
-                      <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Aug, 16 2023 &middot; New York, NY</span>
-                    </div>
-                  </div>
-                  <div className="items-center block mt-5 sm:flex">
-                    <div className="text-gray-600 dark:text-gray-400">
-                      <div className="text-base font-normal">
-                        <span className="font-medium text-gray-900 dark:text-white">Andrew Larkin</span> recommends <span className="font-medium text-gray-900 dark:text-white">Wahlburgers.</span>
-                      </div>
-                      <div className="text-sm font-normal">"I think Five Guys is the best burger chain nationwide."</div>
-                      <span className="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">Aug, 16 2023 &middot; New York, NY</span>
-                    </div>
-                  </div>
-                </li>
+                    </li>
+                  );
+                })}
               </ol>
             </div>
           </main>

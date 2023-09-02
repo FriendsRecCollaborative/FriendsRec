@@ -152,7 +152,7 @@ authController.getFollowing = async (req, res, next) => {
 
 authController.getFollowers = async (req, res, next) => {
   const { id } = req.params;
-  const query = `SELECT * FROM friends where friends_id = $1`;
+  const query = `SELECT * FROM friends where friend_id = $1`;
   const values = [id];
   const response = await db.query(query, values);
   res.locals.followers = response.rows;

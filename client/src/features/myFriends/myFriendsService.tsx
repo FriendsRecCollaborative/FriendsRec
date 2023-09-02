@@ -12,6 +12,11 @@ const getMyFriends = async () => {
   return response.data;
 };
 
+const getMyFollowers = async () => {
+  const response = await axios.get(`/api/auth/followers/${userInfo.user_id}`);
+  return response.data;
+};
+
 const removeFriend = async (friendData: any) => {
   const response = await axios.delete('/api/auth/removefriend', {
     data: friendData,
@@ -23,6 +28,7 @@ const removeFriend = async (friendData: any) => {
 const myFriendsService = {
   addFriend,
   getMyFriends,
+  getMyFollowers,
   removeFriend,
 };
 
