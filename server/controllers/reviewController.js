@@ -17,7 +17,6 @@ reviewController.getAllReviews = (req, res, next) => {
   db.query(query)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -52,7 +51,6 @@ reviewController.getPaginatedReviews = (req, res, next) => {
   db.query(query, values)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -86,7 +84,6 @@ reviewController.getAllMyReviews = async (req, res, next) => {
     .then((data) => {
       console.log(data.rows);
       res.locals = data.rows;
-      db.release();
       return next();
       // let vals = data.rows;
       // for (let i = 0; i < vals.length; i++) {
@@ -114,7 +111,6 @@ reviewController.getUserReview = (req, res, next) => {
   db.query(query, values)
     .then((data) => {
       res.locals.reviews = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -168,7 +164,6 @@ reviewController.createReview = async (req, res, next) => {
   db.query(recQuery, values)
     .then((data) => {
       res.locals = data.rows;
-      db.release();
       return next();
     })
     .catch((error) => {
@@ -186,7 +181,6 @@ reviewController.deleteReview = (req, res, next) => {
 
   db.query(query, values)
     .then((data) => {
-      db.release();
       return next();
     })
     .catch((error) => {
