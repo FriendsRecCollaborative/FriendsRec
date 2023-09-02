@@ -3,6 +3,7 @@ import myFriendsService from './myFriendsService';
 
 const initialState = {
   myFriends: [] as any[],
+  myFollowers: [] as any[],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -21,6 +22,16 @@ export const addFriend = createAsyncThunk('friends/addFriend', async (friendData
 export const getMyFriends = createAsyncThunk('friends/getMyFriends', async () => {
   try {
     const response = await myFriendsService.getMyFriends();
+    return response;
+  } catch (error) {
+    console.log(`${error}`);
+    throw error;
+  }
+});
+
+export const getMyFollowers = createAsyncThunk('friends/getMyFollowers', async () => {
+  try {
+    const response = await myFriendsService.getMyFollowers();
     return response;
   } catch (error) {
     console.log(`${error}`);
@@ -67,6 +78,18 @@ export const myFriendsSlice = createSlice({
         state.myFriends = action.payload;
       })
       .addCase(getMyFriends.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getMyFollowers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMyFollowers.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.myFollowers = action.payload;
+      })
+      .addCase(getMyFollowers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

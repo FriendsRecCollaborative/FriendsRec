@@ -25,6 +25,8 @@ function Home() {
     dispatch(getNewsfeed() as any);
   }, [user, navigate, isError, dispatch, isSuccess]);
 
+  console.log(newsfeed);
+
   const thisWeek: NewsfeedItem[] = [];
   const lastWeek: NewsfeedItem[] = [];
   const lastMonth: NewsfeedItem[] = [];
@@ -55,7 +57,7 @@ function Home() {
       <div className="flex bg-gray-50">
         <Sidebar />
         <div className="flex-1 ml-80">
-          <div className="mr-64 p-20 pt-24 border-r-[1.5px] h-full right-0 bg-gray-50">
+          <div className="lg:mr-64 md:mr-0 p-20 pt-24 border-r-[1.5px] h-full right-0 bg-gray-50">
             <time className="text-lg font-semibold text-gray-900 dark:text-white">This Week</time>
             <div className="mt-3 p-5 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
               {thisWeek.map((item, index) => (

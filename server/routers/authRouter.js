@@ -44,7 +44,7 @@ authRouter.get('/following/:id', authController.getFollowing, (req, res, next) =
 });
 
 authRouter.get('/followers/:id', authController.getFollowers, (req, res, next) => {
-    return res.status(200).json(res.locals.followers);
-})
+  return res.status(200).json(res.locals.followers);
+});
 
 module.exports = authRouter; 
