@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const userInfo = JSON.parse(localStorage.getItem('user') || '');
+const userStorageItem = localStorage.getItem('user');
+const userInfo = userStorageItem ? JSON.parse(userStorageItem) : null;
 
 const addFriend = async (friendData: any) => {
   const response = await axios.post('/api/auth/addfriend', friendData);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const userInfo = JSON.parse(localStorage.getItem('user') || '');
+const userStorageItem = localStorage.getItem('user');
+const userInfo = userStorageItem ? JSON.parse(userStorageItem) : null;
 
 const getNewsfeed = async () => {
   const response = await axios.get('/api/review/allreviews');
